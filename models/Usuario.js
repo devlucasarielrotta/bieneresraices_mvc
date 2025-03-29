@@ -1,22 +1,33 @@
 import { DataTypes } from "sequelize";
+import bcrypt from 'bcrypt'
 import db from "../config/db.js";
 
 
-const Usuario = db.define('usuarios',{
+const Usuario = db.define('usuarios', {
     nombre: {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    email:{
+    email: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    password:{
+    password: {
         type: DataTypes.STRING,
         allowNull: false
     },
     token: DataTypes.STRING,
     confirmado: DataTypes.BOOLEAN
+}, {
+    hooks: {
+        beforeCreate: async (usuario) => {
+            const salt = await bcrypt.genSalt();
+            usuario.password = await bcrypt.hash(usuario.password, salt);
+        },
+    },
 });
 
+Usuario.prototype.verificarPassword= function(password){
+    return bcrypt.compareSync(password,this.password)
+}
 export default Usuario
