@@ -23,13 +23,6 @@ app.use(csrf({cookie:true}))
 // conexion a la base de datos
 try{
     await db.authenticate();
-    db.truncate()
-    await Usuario.create({
-        nombre: 'lucas rotta',
-        email: 'lucas@gmail.com',
-        confirmado: true,
-        password: '123456', // Recuerda encriptar esto en un sistema real
-    });
     console.log('Conexion a la base de datos correcto')
 }catch(error){
     console.log(error)
