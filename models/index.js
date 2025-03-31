@@ -3,10 +3,10 @@ import Precio from './Precio.js'
 import Categoria from './Categoria.js'
 import Usuario from './Usuario.js'
 
-Precio.hasOne(Propiedad, {foreignKey:'precioId' }); // Propiedad.belongsTo(Precio)
-Categoria.hasOne(Propiedad, {foreignKey:'categoriaId'}); 
-Propiedad.belongsTo(Usuario,{foreignKey:'usuarioId'})
-
+//Precio.hasOne(Propiedad)
+Propiedad.belongsTo(Precio, { foreignKey: 'precioId' })
+Propiedad.belongsTo(Categoria, { foreignKey: 'categoriaId', as: 'categoria' }) // Cambio aquí
+Propiedad.belongsTo(Usuario, { foreignKey: 'usuarioId' })
 
 
 export {
