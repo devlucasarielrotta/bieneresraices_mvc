@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from 'express-validator';
-import { admin, crear,guardar, agregarImagen , almacenarImagen} from "../controllers/propiedadController.js";
+import { admin, crear,guardar, agregarImagen , almacenarImagen,editar} from "../controllers/propiedadController.js";
 import upload from '../middleware/subirImagen.js'
 
 const router = Router();
@@ -25,4 +25,5 @@ router.post('/agregar-imagen/:id',[
     upload.single('imagen')
 ],almacenarImagen)
 
+router.get('/mis-propiedades/editar/:id',editar)
 export default router

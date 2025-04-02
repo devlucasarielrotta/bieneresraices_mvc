@@ -48,6 +48,7 @@ const guardar = async (req, res) => {
             Precio.findAll(),
             Categoria.findAll()
         ])
+
         return res.render('propiedades/crear', {
             pagina: 'Crear Propiedad',
             categorias,
@@ -58,6 +59,7 @@ const guardar = async (req, res) => {
         })
     
     }
+    
     try{ 
         const propiedadGuardada = await Propiedad.create({
             ...req.body,
@@ -130,10 +132,40 @@ const almacenarImagen = async (req,res,next) => {
         console.log(error)
      }
 }
+const editar = async (req,res) => {
+    const {id} = req.params;
+    const propiedad = await Propiedad.findByPk(id);
+
+    if(!propiedad){
+        return res.redirect('/api/v1/propiedades/mis-propiedades')
+    } 
+
+    if(req.usuario.id.toString() !== propiedad.usuarioId.toString()){
+        return res.redirect('/api/v1/propiedades/mis-propiedades') 
+    }
+
+    const [precios, categorias] = await Promise.all([
+        Precio.findAll(),
+        Categoria.findAll()
+    ])
+
+    
+
+    res.render('propiedades/editar', {
+        pagina: `Editar propiedad`,
+        csrfToken: req.csrfToken(),
+        categorias,
+        precios,
+        datos: propiedad
+    })
+}
+
+
 export {
     admin,
     crear,
     guardar,
     agregarImagen,
-    almacenarImagen
+    almacenarImagen,
+    editar
 }
