@@ -4,7 +4,6 @@ import csrf from 'csurf'
 import cookieParser from 'cookie-parser';
 import routes from './routes/index.js'
 import db from './config/db.js'
-import Usuario from './models/Usuario.js';
 
 dotenv.config();
 
@@ -23,6 +22,7 @@ app.use(csrf({cookie:true}))
 // conexion a la base de datos
 try{
     await db.authenticate();
+    db.sync()
     console.log('Conexion a la base de datos correcto')
 }catch(error){
     console.log(error)
